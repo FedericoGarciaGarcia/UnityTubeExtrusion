@@ -1,0 +1,8 @@
+UnityTubeExtrusion/Assets/AssetStoreTools/**
+UnityTubeExtrusion/Assets/AssetStoreTools.meta
+UnityTubeExtrusion/Assets/TubeExtrusion.meta
+UnityTubeExtrusion/Library/**
+UnityTubeExtrusion/Logs/**
+UnityTubeExtrusion/Packages/**
+UnityTubeExtrusion/ProjectSettings/**
+*.meta
