@@ -1,4 +1,12 @@
-﻿using System;
+﻿///////////////////////////////////////////////////////////////////////////////
+// Author: Federico Garcia Garcia
+// License: GPL-3.0 
+// Date: GPL-3.0
+// Created on: 04/06/2020 23:00
+// Last modified: 04/06/2020 23:00
+///////////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
