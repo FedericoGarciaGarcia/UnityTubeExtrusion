@@ -370,7 +370,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b13ab886bd18b224b959abebae924f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipPolylines: 0
   dequeSize: 50
   decimation: 0.95
   scale: 4
@@ -379,5 +378,6 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 6c4713abb57013045b399e0e7137bede, type: 2}
   colorStart: {r: 1, g: 0, b: 0, a: 1}
   colorEnd: {r: 0, g: 1, b: 0, a: 1}
+  LOD: 1
   numberOfThreads: 7
-  filePath: Resources\corpuscallosum.obj
+  path: Resources/corpuscallosum.obj

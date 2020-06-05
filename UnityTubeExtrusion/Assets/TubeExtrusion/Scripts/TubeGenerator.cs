@@ -12,8 +12,7 @@ using System.Threading;
 using UnityEngine;
 
 public class TubeGenerator : MonoBehaviour
-{  
-	public int skipPolylines = 0; // How many polylines to be skipped.
+{
 	public int dequeSize = 10000; // How many generated tubes to be sent to the GPU every frame   
 	public float decimation = 0;  // Decimation level, between 0 and 1. If set to 0, each polyline will have only two vertices (the endpoints)
 	public float scale = 1;       // To resize the vertex data
@@ -22,13 +21,15 @@ public class TubeGenerator : MonoBehaviour
 	public Material material;     // Texture (can be null)
 	public Color colorStart = Color.white; // Start color
 	public Color colorEnd   = Color.white; // End color
+	public int LOD; // How many times the LOD algorithm should be run.
 		
 	public int numberOfThreads = 1; // Number of threads used to generate tube.
 	
-	private Vector3 [][] polylines;   // To store polylines data
-	private GameObject [] actors;     // Gameobjects that will have tubes attached
-	private Tube [] tubes;            // Tubes
-	private bool [] attached;         // If actors have already have their tube attached
+	private Vector3 [][] polylines; // To store polylines data
+	private float   [][] radii;     // To store radius data
+	private GameObject [] actors;   // Gameobjects that will have tubes attached
+	private Tube [] tubes;          // Tubes
+	private bool [] attached;       // If actors have already have their tube attached
 	
 	private int ncpus; // How many CPU cores are available
 	
@@ -36,24 +37,47 @@ public class TubeGenerator : MonoBehaviour
 	private int nextLine;
 	private readonly object _lock  = new object();
 	private readonly object _enque = new object();
-	
-	// Used polylines when created
-	private Vector3 [][] allpolylines;
-	
+
 	// To dispatch coroutines
 	public readonly Queue<Action> ExecuteOnMainThread = new Queue<Action>();
 	
     protected void Generate(Vector3 [][] allpolylines)
     {
-		// Get this lines
-		this.allpolylines = allpolylines;
-		
-		// Skip polylines, if any
-		skipPolylines++;
-		polylines = new Vector3[allpolylines.Length/skipPolylines][];
-		
-		for(int i=0; i<polylines.Length; i++) {
-			polylines[i] = allpolylines[i*skipPolylines];
+		// If there is no LOD, just set radius
+		if(LOD == 0) {
+			// Use all original polylines
+			polylines = allpolylines;
+			
+			// Radius
+			radii = new float[polylines.Length][];
+			
+			// Set initial radius
+			for(int i=0; i<radii.Length; i++) {
+				
+				radii[i] = new float [polylines[i].Length];
+				
+				for(int j=0; j<radii[i].Length; j++) {
+					radii[i][j] = radius;
+				}
+			}
+		}
+		// If LOD > 0, merge polylines
+		else {
+			// @TODO: Make this multithreaded
+			// Get the average distance between two pair of points for every polyline
+			float averageDistance = 0;
+			int npoints = 0;
+			
+			for(int i=0; i<allpolylines.Length; i++) {
+				npoints++;
+				for(int j=0; j<allpolylines[i].Length-1; j++) {
+					averageDistance += Vector3.Distance(allpolylines[i][j], allpolylines[i][j+1]);
+					npoints++;
+				}
+			}
+			averageDistance /= (float)npoints;
+			Debug.Log(averageDistance);
+			
 		}
 		
 		// Generate tubes
@@ -115,7 +139,7 @@ public class TubeGenerator : MonoBehaviour
 		int lpt = polylines.Length/ncpus;
 		
 		for(int i=0; i<ncpus; i++) {
-			threads[i] = new Thread(()=>ThreadCreateTubes(polylines));
+			threads[i] = new Thread(()=>ThreadCreateTubes());
 		}
 		
 		// Start threads
@@ -141,7 +165,7 @@ public class TubeGenerator : MonoBehaviour
 	}
 	
 	// Create tube in a thread
-	public void ThreadCreateTubes(Vector3 [][] polylines) {
+	public void ThreadCreateTubes() {
 		
         while(nextLine < polylines.Length) {
 		    // If we directly use i instead of x "AttachTubeToGameobject(i)" we have a concurrency problem;
@@ -155,8 +179,8 @@ public class TubeGenerator : MonoBehaviour
 			}
 			
 			if(x < polylines.Length) {
-				// Run coroutine on the main thread that adds the tube data to the gameobject	   
-				CreateTube(polylines[x], x);
+				// Run coroutine on the main thread that adds the tube data to the gameobject
+				CreateTube(x);
 				
 				// Make sure to lock to avoid multithreading problems
 				lock(_enque) {
@@ -185,11 +209,20 @@ public class TubeGenerator : MonoBehaviour
 	}
 	
 	// Create a tube
-	void CreateTube(Vector3 [] polyline, int i) {
+	void CreateTube(int i) {
 		// Create empty tube
 		tubes[i] = new Tube();
 		
 		// Generate data
-		tubes[i].Create(polyline, decimation, scale, radius, resolution);
+		tubes[i].Create(polylines[i], decimation, scale, radii[i], resolution);
+	}
+	
+	// Create a tube by merging
+	void MergeTube(int i) {
+		// Create empty tube
+		tubes[i] = new Tube();
+		
+		// Generate data
+		tubes[i].Create(polylines[i], decimation, scale, radii[i], resolution);
 	}
 }

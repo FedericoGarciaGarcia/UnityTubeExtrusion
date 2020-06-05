@@ -3,6 +3,9 @@
 // License: GPL-3.0 
 // Created on: 04/06/2020 23:00
 // Last modified: 04/06/2020 23:00
+//
+// @TODO: implement "smart decimation": not all points are equal;
+//        spikes should be preserved
 ///////////////////////////////////////////////////////////////////////////////
 
 using System.Collections;
@@ -19,9 +22,9 @@ public class Tube
 	public Vector2[] uv;       // UV texture coordinates
 	public Vector3 position;   // The position is the vertex in the middle
 	
-	private float decimation;  // Decimation level, between 0 and 1
-	private float scale;       // Rescaling of the vertices
-    private float radius;      // Radius of the tubes
+	private float decimation; // Decimation level, between 0 and 1
+	private float scale;      // Rescaling of the vertices
+    private float [] radii;   // Array of radius for each point
 	public int resolution ;   // Number of points per revolution
 		
 	private Vector3[] circle; // Circle to make the tubes
@@ -29,7 +32,7 @@ public class Tube
 	
 	private float length; // Length of the polyline (sum of distances between adyacent pair of points)
 	
-    public void Create(Vector3 [] polyline, float decimation, float scale, float radius, int resolution)
+    public void Create(Vector3 [] polyline, float decimation, float scale, float [] radii, int resolution)
     {
 		// More vertices for texture seaming
 		resolution ++;
@@ -37,7 +40,7 @@ public class Tube
 		// Set properties
 		this.decimation = decimation;
 		this.scale      = scale;
-		this.radius     = radius;
+		this.radii      = radii;
 		this.resolution = resolution;
 		
 		// Create a radius=1 circle
@@ -206,7 +209,7 @@ public class Tube
 		if(index == 0) {
 			// Generate points
 			for(int i=0; i<resolution; i++) {
-				Vector3 rotCirclePoint = rotation * (circle[i] * radius);
+				Vector3 rotCirclePoint = rotation * (circle[i] * radii[index]);
 				
 				vertices[index*resolution+i] = new Vector3(Q.x+rotCirclePoint.x, Q.y+rotCirclePoint.y, Q.z+rotCirclePoint.z);
 			}
@@ -231,8 +234,8 @@ public class Tube
 			// Generate points
 			for(int i=0; i<resolution; i++) {
 				
-				Vector3 rotCirclePoint = rotation * rotation2 * (circle[i] * radius); // We multiply by the radius here instead of when the circle is generated
-																					  // to avoid deformated tubes when the radius is too small
+				Vector3 rotCirclePoint = rotation * rotation2 * (circle[i] * radii[index]); // We multiply by the radius here instead of when the circle is generated
+																					        // to avoid deformated tubes when the radius is too small
 				
 				vertices[index*resolution+i] = new Vector3(Q.x+rotCirclePoint.x, Q.y+rotCirclePoint.y, Q.z+rotCirclePoint.z);
 			}
