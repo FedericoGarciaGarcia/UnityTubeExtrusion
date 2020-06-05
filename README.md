@@ -27,11 +27,11 @@ Data must be *Vector3 \[\]\[\]*; an array of polylines, where each point is a Ve
 ### OBJ File
 OBJ files do not need to be included in Unity's Asset folder; this allows the user to select any file on any location.
 
-1. Create a GameObject and Attach an *TubeGeneratorFromObj* script to it.
+1. Create a GameObject and Attach a *TubeGeneratorFromObj* script to it.
 2. Set the .obj's file path in *TubeGeneratorFromObj*'s *filePath* variable.
 3. Tube extrusion will commence automatically.
 
-A demo scene, "*Example Obj Reader*", is included. The *.obj* file is located in the *Resources* folder.
+A demo scene, "*Example Obj Reader*", is included in this repository. The *.obj* file is located in the *Resources* folder.
 
 ### Vector3 Array
 
@@ -88,7 +88,7 @@ public class ExampleCylinder : TubeGenerator
 	}
 }
 ```
-A demo scene, "*Example Arrays*", is included.
+A demo scene, "*Example Arrays*", is included is included in this repository.
 
 ### *TubeGenerator* properties
 
