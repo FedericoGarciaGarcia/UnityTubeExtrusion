@@ -28,6 +28,7 @@ public class TubeGenerator : MonoBehaviour
 	private Vector3 [][] polylines;   // To store polylines data
 	private GameObject [] actors;     // Gameobjects that will have tubes attached
 	private Tube [] tubes;            // Tubes
+	private bool [] attached;         // If actors have already have their tube attached
 	
 	private int ncpus; // How many CPU cores are available
 	
@@ -36,11 +37,49 @@ public class TubeGenerator : MonoBehaviour
 	private readonly object _lock  = new object();
 	private readonly object _enque = new object();
 	
+	// Used polylines when created
+	private Vector3 [][] allpolylines;
+	
 	// To dispatch coroutines
 	public readonly Queue<Action> ExecuteOnMainThread = new Queue<Action>();
 	
     protected void Generate(Vector3 [][] allpolylines)
     {
+		// Get this lines
+		this.allpolylines = allpolylines;
+		
+		// Skip polylines, if any
+		skipPolylines++;
+		polylines = new Vector3[allpolylines.Length/skipPolylines][];
+		
+		for(int i=0; i<polylines.Length; i++) {
+			polylines[i] = allpolylines[i*skipPolylines];
+		}
+		
+		// Generate tubes
+		UpdateTubes();
+	}
+	
+	// Only update tubes
+	public void UpdateTubes() {
+		// Create array of bools
+		attached = new bool[polylines.Length];
+		
+		// Create game objects
+		actors = new GameObject[polylines.Length];
+		
+		// Attach an actor to the game object
+		for(int i=0; i<actors.Length; i++) {
+			actors[i] = new GameObject();
+			actors[i].name = "Tube "+(i+1);
+			actors[i].AddComponent<Actor>();
+			actors[i].transform.parent = transform;
+		}
+		
+		// To store tubes
+		tubes = new Tube[polylines.Length];
+		
+		// Init lock index
 		nextLine = 0;
 		
 		// Number of CPUS to use for tubing
@@ -52,14 +91,6 @@ public class TubeGenerator : MonoBehaviour
 		// Avoid negative number of cpus
 		if(ncpus < 0)
 			ncpus = 1;
-		
-		// Skip polylines, if any
-		skipPolylines++;
-		polylines = new Vector3[allpolylines.Length/skipPolylines][];
-		
-		for(int i=0; i<polylines.Length; i++) {
-			polylines[i] = allpolylines[i*skipPolylines];
-		}
 		
 		// Decimate points
 		int npoints = 0;
@@ -76,20 +107,6 @@ public class TubeGenerator : MonoBehaviour
 				npointsLine = 2;
 			ndecimatedpoints += npointsLine;
 		}
-		
-		// Create game objects
-		actors = new GameObject[polylines.Length];
-		
-		// Attach an actor to the game object
-		for(int i=0; i<actors.Length; i++) {
-			actors[i] = new GameObject();
-			actors[i].name = "Tube "+(i+1);
-			actors[i].AddComponent<Actor>();
-			actors[i].transform.parent = transform;
-		}
-		
-		// To store tubes
-		tubes = new Tube[polylines.Length];
 		
 		// Create tubes using specified number of threads
 		Thread [] threads = new Thread[ncpus];
@@ -160,7 +177,11 @@ public class TubeGenerator : MonoBehaviour
 		float lerp = (float)i/(float)polylines.Length;
 		actors[i].GetComponent<Actor>().SetMaterial(material);
 		actors[i].GetComponent<Actor>().SetColor(Color.Lerp(colorStart, colorEnd, lerp));
+		
+		if(!attached[i])
 		actors[i].transform.localPosition += transform.position;
+	
+		attached[i] = true;
 	}
 	
 	// Create a tube

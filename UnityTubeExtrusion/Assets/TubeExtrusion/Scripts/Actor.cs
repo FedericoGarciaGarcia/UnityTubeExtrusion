@@ -12,6 +12,7 @@ using UnityEngine;
 public class Actor : MonoBehaviour
 {
 	private MeshRenderer meshRenderer;
+	private MeshFilter meshFilter;
 	private Mesh mesh;
 	//private Tube tube;
 
@@ -22,10 +23,7 @@ public class Actor : MonoBehaviour
         meshRenderer = gameObject.AddComponent<MeshRenderer>();
         meshRenderer.sharedMaterial = new Material(Shader.Find("Standard"));
 
-        MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
-
-        mesh = new Mesh();
-        meshFilter.mesh = mesh;
+        meshFilter = gameObject.AddComponent<MeshFilter>();
     }
 	
 	// Set material to mesh
@@ -43,6 +41,9 @@ public class Actor : MonoBehaviour
 	public void SetTube(Tube tube) {
 		// Get tube and data
 		//this.tube = tube;
+		
+        mesh = new Mesh();
+        meshFilter.mesh = mesh;
 		
 		// Set new data
         mesh.vertices = tube.vertices;
