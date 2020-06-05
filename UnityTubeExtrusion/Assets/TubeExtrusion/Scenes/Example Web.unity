@@ -357,14 +357,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skipPolylines: 0
-  decimation: 0.98
+  decimation: 0.9
   scale: 4
   radius: 0.01
   resolution: 3
   material: {fileID: 2100000, guid: 6c4713abb57013045b399e0e7137bede, type: 2}
   colorStart: {r: 1, g: 0, b: 0, a: 1}
   colorEnd: {r: 0, g: 1, b: 0, a: 1}
-  filePath: Resources\corpuscallosum.obj
+  url: https://raw.githubusercontent.com/FedericoGarciaGarcia/UnityTubeExtrusion/master/UnityTubeExtrusion/Resources/corpuscallosum.obj
 --- !u!4 &1471071261
 Transform:
   m_ObjectHideFlags: 0

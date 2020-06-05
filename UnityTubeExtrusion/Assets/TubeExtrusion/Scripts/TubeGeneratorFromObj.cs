@@ -21,7 +21,7 @@ public class TubeGeneratorFromObj : TubeGenerator
 		ObjReader objReader = new ObjReader();
 		
 		// Get data from OBJ reader
-		Vector3[][] polylines = objReader.GetPolylines(filePath);
+		Vector3[][] polylines = objReader.GetPolylinesFromFilePath(filePath);
 		
 		// Create tubes
 		Generate(polylines);

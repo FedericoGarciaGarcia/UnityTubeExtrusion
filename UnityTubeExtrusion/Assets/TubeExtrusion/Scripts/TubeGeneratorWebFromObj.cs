@@ -13,7 +13,7 @@ using UnityEngine;
 
 public class TubeGeneratorWebFromObj : TubeGeneratorWeb
 {
-	public string filePath;
+	public string url;
 	
 	void Start()
 	{
@@ -21,7 +21,7 @@ public class TubeGeneratorWebFromObj : TubeGeneratorWeb
 		ObjReader objReader = new ObjReader();
 		
 		// Get data from OBJ reader
-		Vector3[][] polylines = objReader.GetPolylines(filePath);
+		Vector3[][] polylines = objReader.GetPolylinesFromURL(url);
 		
 		// Create tubes
 		Generate(polylines);
