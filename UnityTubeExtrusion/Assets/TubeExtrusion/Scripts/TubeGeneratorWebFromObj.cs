@@ -1,8 +1,8 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 // Author: Federico Garcia Garcia
 // License: GPL-3.0 
-// Created on: 05/06/2020 13:27
-// Last modified: 05/06/2020 13:27
+// Created on: 04/06/2020 23:00
+// Last modified: 04/06/2020 23:00
 ///////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -11,15 +11,19 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class ExampleWeb : TubeGeneratorWeb
+public class TubeGeneratorWebFromObj : TubeGeneratorWeb
 {
+	public string filePath;
+	
 	void Start()
 	{
-		Vector3 [][] polylines = new Vector3[1][];
-		polylines[0] = new Vector3[2];
-		polylines[0][0] = new Vector3(0, -1, 0);
-		polylines[0][1] = new Vector3(0, 1, 0);
+		// Create OBJ reader
+		ObjReader objReader = new ObjReader();
 		
+		// Get data from OBJ reader
+		Vector3[][] polylines = objReader.GetPolylines(filePath);
+		
+		// Create tubes
 		Generate(polylines);
 	}
 }

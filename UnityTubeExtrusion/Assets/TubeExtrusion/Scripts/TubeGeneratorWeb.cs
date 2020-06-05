@@ -14,8 +14,7 @@ using UnityEngine;
 // As it is web, no threading is allowed
 public class TubeGeneratorWeb : MonoBehaviour
 {  
-	public int skipPolylines = 0; // How many polylines to be skipped.
-	public int dequeSize = 10000; // How many generated tubes to be sent to the GPU every frame   
+	public int skipPolylines = 0; // How many polylines to be skipped. 
 	public float decimation = 0;  // Decimation level, between 0 and 1. If set to 0, each polyline will have only two vertices (the endpoints)
 	public float scale = 1;       // To resize the vertex data
     public float radius = 1;      // Thickness of the tube
@@ -31,9 +30,6 @@ public class TubeGeneratorWeb : MonoBehaviour
 	
 	// Used polylines when created
 	private Vector3 [][] allpolylines;
-	
-	// To dispatch coroutines
-	public readonly Queue<Action> ExecuteOnMainThread = new Queue<Action>();
 	
     protected void Generate(Vector3 [][] allpolylines)
     {
@@ -100,9 +96,8 @@ public class TubeGeneratorWeb : MonoBehaviour
     }
 	
 	// Coroutine to attach tube to actor
-	IEnumerator AttachTubeToGameobject(int i) {
-		yield return null;
-		
+	private void AttachTubeToGameobject(int i) {
+
 		// Give tube data to gameobject's actor
 		actors[i].GetComponent<Actor>().SetTube(tubes[i]);
 		

@@ -19,11 +19,6 @@ public class Actor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Create mesh and attach
-        meshRenderer = gameObject.AddComponent<MeshRenderer>();
-        meshRenderer.sharedMaterial = new Material(Shader.Find("Standard"));
-
-        meshFilter = gameObject.AddComponent<MeshFilter>();
     }
 	
 	// Set material to mesh
@@ -39,11 +34,16 @@ public class Actor : MonoBehaviour
 	
 	// Set mesh data from tube
 	public void SetTube(Tube tube) {
+        // Create mesh and attach
+        meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        meshRenderer.sharedMaterial = new Material(Shader.Find("Standard"));
+
+        meshFilter = gameObject.AddComponent<MeshFilter>();
+		
 		// Get tube and data
 		//this.tube = tube;
 		
         mesh = new Mesh();
-        meshFilter.mesh = mesh;
 		
 		// Set new data
         mesh.vertices = tube.vertices;
@@ -62,6 +62,8 @@ public class Actor : MonoBehaviour
 
         // assign the array of normals to the mesh
         mesh.normals = normals;
+		
+        meshFilter.mesh = mesh;
 	}
 
     // Update is called once per frame
