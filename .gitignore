@@ -5,4 +5,5 @@ UnityTubeExtrusion/Library/**
 UnityTubeExtrusion/Logs/**
 UnityTubeExtrusion/Packages/**
 UnityTubeExtrusion/ProjectSettings/**
+UnityTubeExtrusion/Temp/**
 *.meta
