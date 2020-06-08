@@ -13,6 +13,7 @@ Tube extrusion for polylines in Unity.
 * Multithreading.
 * Realtime.
 * End capping.
+* Load data from URL.
 
 ## Installing
 
@@ -25,13 +26,13 @@ Simply import the package in Unity from [here](https://assetstore.unity.com/pack
 Data must be *Vector3 \[\]\[\]*; an array of polylines, where each point is a Vector3.
 
 ### OBJ File
-OBJ files do not need to be included in Unity's Asset folder; this allows the user to select any file on any location.
+OBJ files do not need to be included in Unity's Asset or Resources folder. URLs can also be used.
 
 1. Create a GameObject and Attach a *TubeGeneratorFromObj* script to it.
-2. Set the .obj's file path in *TubeGeneratorFromObj*'s *filePath* variable.
+2. Set the .obj's file path or URL in *TubeGeneratorFromObj*'s *filePath* variable.
 3. Tube extrusion will commence automatically.
 
-A demo scene, "*Example Obj Reader*", is included in this repository. The *.obj* file is located in the *Resources* folder.
+A demo scene, "*Example Obj Reader*", is included in this repository. The *.obj* file used is located in the *Resources* folder.
 
 ### Vector3 Array
 
