@@ -1,12 +1,10 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 // Author: Federico Garcia Garcia
-// License: GPL-3.0 
+// License: GPL-3.0
 // Created on: 04/06/2020 23:00
-// Last modified: 04/06/2020 23:00
-//
-// @TODO: implement "smart decimation": not all points are equal;
-//        spikes should be preserved
 ///////////////////////////////////////////////////////////////////////////////
+
+// @TODO: implement "smart decimation": not all points are equal; spikes should be preserved
 
 using System.Collections;
 using System.Collections.Generic;

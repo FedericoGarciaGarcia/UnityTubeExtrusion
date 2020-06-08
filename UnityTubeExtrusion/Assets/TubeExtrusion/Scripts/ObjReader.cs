@@ -1,8 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 // Author: Federico Garcia Garcia
-// License: GPL-3.0 
+// License: GPL-3.0
 // Created on: 04/06/2020 23:00
-// Last modified: 04/06/2020 23:00
 ///////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -15,52 +14,16 @@ using UnityEngine.Networking;
 
 public class ObjReader
 {
-    // Start is called before the first frame update
     public Vector3 [][] GetPolylinesFromFilePath(string filePath)
     {
 		// Open
         StreamReader reader = new StreamReader(filePath);
 		
 		// Return data
-		return GetFromStream(reader);
+		return GetPolylinesFromStreamReader(reader);
     }
 	
-	public Vector3[][] GetPolylinesFromURL(string url) {
-        return RequestPolylinesFromURL(url);
-    }
- 
-    private Vector3[][] RequestPolylinesFromURL(string url) {
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        www.SendWebRequest();
-		
-		while (!www.isDone) {
-		}
- 
-        if(www.isNetworkError || www.isHttpError) {
-            Debug.Log(www.error);
-        }
-        else {
-
-            // Or retrieve results as binary data
-            //byte[] byteArray = www.downloadHandler.data;
-			
-			// Get bytes from file
-			byte[] byteArray = Encoding.UTF8.GetBytes(www.downloadHandler.text);
-			
-			
-			// Create memory stream
-			MemoryStream stream = new MemoryStream(byteArray);
-
-			// Convert MemoryStream to StreamReader
-			StreamReader reader = new StreamReader(stream);
-			
-			return GetFromStream(reader);
-        }
-		
-		return null;
-    }
-	
-	private Vector3 [][] GetFromStream(StreamReader reader) {
+	public Vector3 [][] GetPolylinesFromStreamReader(StreamReader reader) {
 		
 		// To store vertices and lines
 		List<Vector3> vertices = new List<Vector3>();

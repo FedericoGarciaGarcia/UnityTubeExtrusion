@@ -1,8 +1,7 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 // Author: Federico Garcia Garcia
-// License: GPL-3.0 
+// License: GPL-3.0
 // Created on: 04/06/2020 23:00
-// Last modified: 05/06/2020 11:00
 ///////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -16,12 +15,11 @@ public class TubeGenerator : MonoBehaviour
 	public int dequeSize = 10000; // How many generated tubes to be sent to the GPU every frame   
 	public float decimation = 0;  // Decimation level, between 0 and 1. If set to 0, each polyline will have only two vertices (the endpoints)
 	public float scale = 1;       // To resize the vertex data
-    public float radius = 1;      // Thickness of the tube
+    public float radius = 1;      // Thickness of the tube for LOD 0
 	public int resolution = 3;    // Number of sides for each tube
 	public Material material;     // Texture (can be null)
 	public Color colorStart = Color.white; // Start color
 	public Color colorEnd   = Color.white; // End color
-	public int LOD; // How many times the LOD algorithm should be run.
 		
 	public int numberOfThreads = 1; // Number of threads used to generate tube.
 	
@@ -36,48 +34,29 @@ public class TubeGenerator : MonoBehaviour
 	// For safe multithreading
 	private int nextLine;
 	private readonly object _lock  = new object();
-	private readonly object _enque = new object();
+	protected readonly object _enque = new object();
 
 	// To dispatch coroutines
 	public readonly Queue<Action> ExecuteOnMainThread = new Queue<Action>();
 	
-    protected void Generate(Vector3 [][] allpolylines)
+    protected IEnumerator Generate(Vector3 [][] allpolylines)
     {
-		// If there is no LOD, just set radius
-		if(LOD == 0) {
-			// Use all original polylines
-			polylines = allpolylines;
+		yield return null;
+		
+		// Use all original polylines
+		polylines = allpolylines;
+		
+		// Radius
+		radii = new float[polylines.Length][];
+		
+		// Set initial radius
+		for(int i=0; i<radii.Length; i++) {
 			
-			// Radius
-			radii = new float[polylines.Length][];
+			radii[i] = new float [polylines[i].Length];
 			
-			// Set initial radius
-			for(int i=0; i<radii.Length; i++) {
-				
-				radii[i] = new float [polylines[i].Length];
-				
-				for(int j=0; j<radii[i].Length; j++) {
-					radii[i][j] = radius;
-				}
+			for(int j=0; j<radii[i].Length; j++) {
+				radii[i][j] = radius;
 			}
-		}
-		// If LOD > 0, merge polylines
-		else {
-			// @TODO: Make this multithreaded
-			// Get the average distance between two pair of points for every polyline
-			float averageDistance = 0;
-			int npoints = 0;
-			
-			for(int i=0; i<allpolylines.Length; i++) {
-				npoints++;
-				for(int j=0; j<allpolylines[i].Length-1; j++) {
-					averageDistance += Vector3.Distance(allpolylines[i][j], allpolylines[i][j+1]);
-					npoints++;
-				}
-			}
-			averageDistance /= (float)npoints;
-			Debug.Log(averageDistance);
-			
 		}
 		
 		// Generate tubes
