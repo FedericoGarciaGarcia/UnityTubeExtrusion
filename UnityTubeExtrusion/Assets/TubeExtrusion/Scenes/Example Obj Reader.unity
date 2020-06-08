@@ -519,3 +519,4 @@ MonoBehaviour:
   colorEnd: {r: 0, g: 1, b: 0, a: 1}
   numberOfThreads: 7
   path: Resources/corpuscallosum.obj
+  loading: {fileID: 1228869572}
