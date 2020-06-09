@@ -32,7 +32,7 @@ OBJ files do not need to be included in Unity's Asset or Resources folder. URLs 
 2. Set the .obj's file path or URL in *TubeGeneratorFromObj*'s *filePath* variable.
 3. Tube extrusion will commence automatically.
 
-A demo scene, "*Example Obj Reader*", is included in this repository. The *.obj* file used is located in the *Resources* folder.
+The *.obj* file used is located in the *Resources* folder.
 
 ### Vector3 Array
 
@@ -89,7 +89,6 @@ public class ExampleCylinder : TubeGenerator
 	}
 }
 ```
-A demo scene, "*Example Arrays*", is included is included in this repository.
 
 ### *TubeGenerator* properties
 
@@ -109,7 +108,7 @@ Before tube extrusion, the following properties may be specified:
 ## Showcase
 
 ### Extrusion from OBJ polyline file
-![Obj](https://raw.githubusercontent.com/FedericoGarciaGarcia/UnityTubeExtrusion/master/Images/Corpus%20callosum.png)
+![Obj](https://raw.githubusercontent.com/FedericoGarciaGarcia/UnityTubeExtrusion/master/Images/Corpus%20callosum%20AO.jpg)
 
 ### Extrusion from Vector3 array
 ![Array](https://raw.githubusercontent.com/FedericoGarciaGarcia/UnityTubeExtrusion/master/Images/Coil.png)
