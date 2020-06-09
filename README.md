@@ -94,7 +94,6 @@ public class ExampleCylinder : TubeGenerator
 
 Before tube extrusion, the following properties may be specified:
 
-* *Skip polylines:* how many polylines should be skipped. 0 by default (all polylines are read).
 * *Deque size:* how many tubes are to be sent to the GPU each frame after extrusion. If value is too high, there will be a performance hit. 50 by default.
 * *Decimation:* beween 0 and 1. Percentage of points to be used in each polyline. 0 means all points are used, 0.5 means only half the points are used, etc. Points are evenly skipped. Useful for dense polylines. 0 by default.
 * *Scale:* rescaling of the polylines. 1 by default (no rescaling).
@@ -109,7 +108,7 @@ Before tube extrusion, the following properties may be specified:
 
 ### Extrusion from OBJ polyline file
 ![Obj](https://raw.githubusercontent.com/FedericoGarciaGarcia/UnityTubeExtrusion/master/Images/Corpus%20callosum%20AO.jpg)
-
+       https://raw.githubusercontent.com/FedericoGarciaGarcia/UnityTubeExtrusion/master/Images/Corpus%20callosum%20AO.jpg
 ### Extrusion from Vector3 array
 ![Array](https://raw.githubusercontent.com/FedericoGarciaGarcia/UnityTubeExtrusion/master/Images/Coil.png)
 
@@ -131,5 +130,6 @@ Before tube extrusion, the following properties may be specified:
 
 ## Acknowledgments
 
+Textures and materials taken from:
 * [3D Textures](https://3dtextures.me/)
 * [Texture Haven](https://texturehaven.com/textures/)
