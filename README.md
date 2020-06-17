@@ -17,7 +17,7 @@ Tube extrusion for polylines in Unity.
 
 ## Installing
 
-Simply import the package in Unity from [here](https://assetstore.unity.com/packages/slug/170643) (approval pending). Alternatively, download this repository and manually import files in Unity.
+Download this repository and manually import files in Unity.
 
 ## How to use
 
